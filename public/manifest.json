@@ -1,0 +1,8 @@
+{
+  "name": "podz",
+  "short_name": "podz",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/"
+}
