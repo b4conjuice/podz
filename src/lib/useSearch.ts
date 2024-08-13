@@ -3,11 +3,11 @@ import Fuse from 'fuse.js'
 
 export default function useSearch<T>({
   initialSearch,
-  list,
+  list = [],
   options,
 }: {
   initialSearch?: string
-  list: T[]
+  list?: T[]
   options: Record<string, string[]>
 }) {
   const searchRef = useRef<HTMLInputElement | null>(null)
