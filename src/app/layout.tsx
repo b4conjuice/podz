@@ -1,4 +1,5 @@
 import type { Viewport } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 
 import '@/styles/globals.css'
 
@@ -25,12 +26,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en'>
-      <body>
-        <div className='bg-cb-dark-blue text-cb-white flex min-h-screen flex-col'>
-          {children}
-        </div>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang='en'>
+        <body>
+          <div className='flex min-h-screen flex-col bg-cb-dark-blue text-cb-white'>
+            {children}
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
