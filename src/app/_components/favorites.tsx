@@ -4,14 +4,10 @@ import Link from 'next/link'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid'
 
-import useLocalStorage from '@/lib/useLocalStorage'
 import { type Podcast } from '@/lib/types'
+import { deleteFavorite } from '@/server/queries'
 
-export default function Favorites() {
-  const [favorites, setFavorites] = useLocalStorage<Podcast[]>(
-    'podz-favorites',
-    []
-  )
+export default function Favorites({ favorites }: { favorites: Podcast[] }) {
   if (!favorites || favorites?.length === 0) {
     return null
   }
@@ -27,18 +23,16 @@ export default function Favorites() {
             >
               {favorite.trackName}
             </Link>
-            <button
-              type='button'
-              onClick={() => {
-                setFavorites(
-                  favorites.filter(f => f.trackId !== favorite.trackId)
-                )
+            <form
+              action={async () => {
+                await deleteFavorite(favorite.trackId)
               }}
-              className='group'
             >
-              <SolidHeartIcon className='h-6 w-6 text-cb-pink group-hover:hidden' />
-              <OutlineHeartIcon className='hidden h-6 w-6 text-cb-pink group-hover:block' />
-            </button>
+              <button type='submit' className='group'>
+                <SolidHeartIcon className='h-6 w-6 text-cb-pink group-hover:hidden' />
+                <OutlineHeartIcon className='hidden h-6 w-6 text-cb-pink group-hover:block' />
+              </button>
+            </form>
           </li>
         ))}
       </ul>
