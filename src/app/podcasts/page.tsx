@@ -1,6 +1,6 @@
 import { SignedIn } from '@clerk/nextjs'
 
-import { Main, Title } from '@/components/ui'
+import { Main } from '@/components/ui'
 import SignedInFavoritePodcasts from '../_components/signedInFavoritesPodcasts'
 
 export default async function PodcastsPage() {

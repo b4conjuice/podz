@@ -1,8 +1,6 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
-import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'
+import { SignedIn } from '@clerk/nextjs'
 
-import { Main, Title } from '@/components/ui'
-import Username from './_components/username'
+import { Main } from '@/components/ui'
 import SignedInFavoritePodcasts from './_components/signedInFavoritesPodcasts'
 
 export default function Home() {
