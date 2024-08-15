@@ -29,6 +29,8 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
     }
     if (debouncedSearch) {
       void fetchData()
+    } else {
+      setResults([])
     }
   }, [debouncedSearch])
   return (
