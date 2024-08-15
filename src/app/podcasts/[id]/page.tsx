@@ -31,7 +31,7 @@ export default async function PodcastPage({
     return <p>no podcast found</p>
   }
   return (
-    <Main className='flex flex-col p-4'>
+    <Main className='flex flex-col px-4'>
       <div className='flex w-full flex-grow flex-col items-center space-y-4'>
         <Title>{podcast.trackName}</Title>
         {podcastEpisodes?.length && podcastEpisodes?.length > 0 ? (
