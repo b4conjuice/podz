@@ -1,4 +1,6 @@
-import { Main, Title } from '@/components/ui'
+import Link from 'next/link'
+
+import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { type Podcast } from '@/lib/types'
 import Notes from './notes'
@@ -41,14 +43,24 @@ export default async function EpisodePage({
   if (!podcastEpisode) {
     return (
       <Main className='flex flex-col px-4'>
-        <p>no podcast found</p>
+        <p>no podcast episode found</p>
       </Main>
     )
   }
   return (
-    <Main className='flex flex-col px-4'>
+    <Main className='flex flex-col px-4 pb-4'>
       <div className='flex w-full flex-grow flex-col items-center space-y-4'>
-        <h2>{podcastEpisode.trackName}</h2>
+        <div className='flex w-full flex-col items-center space-y-2'>
+          <h2>{podcastEpisode.trackName}</h2>
+          <h3>
+            <Link
+              href={`/podcasts/${params.id}`}
+              className='text-cb-pink hover:text-cb-pink/75'
+            >
+              {podcast.trackName}
+            </Link>
+          </h3>
+        </div>
         <Notes episodeId={params.episodeId} />
       </div>
     </Main>
