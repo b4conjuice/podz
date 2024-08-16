@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useDebounce } from '@uidotdev/usehooks'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid'
+import { useDebounce } from '@uidotdev/usehooks'
 
 import useSearch from '@/lib/useSearch'
 import fetcher from '@/lib/fetcher'
@@ -12,6 +13,9 @@ import { type Podcast } from '@/lib/types'
 import { addFavorite, deleteFavorite } from '@/server/queries'
 
 export default function Search({ favorites }: { favorites: Podcast[] }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const query = searchParams.get('q')
   const [results, setResults] = useState<Podcast[]>([])
   const { search, setSearch, searchRef } = useSearch({
     initialSearch: '',
@@ -33,6 +37,11 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
       setResults([])
     }
   }, [debouncedSearch])
+  useEffect(() => {
+    if (query) {
+      setSearch(String(query))
+    }
+  }, [query, setSearch])
   return (
     <div className='w-full space-y-4'>
       <h2>search</h2>
@@ -45,6 +54,8 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
         onChange={e => {
           const { value } = e.target
           setSearch(value)
+          const url = `/${value ? `?q=${value}` : ''}`
+          router.push(url)
         }}
       />
       {results?.length && results?.length > 0 ? (
