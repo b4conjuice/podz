@@ -49,18 +49,14 @@ export default async function EpisodePage({
   }
   return (
     <Main className='flex flex-col px-4 pb-4'>
-      <div className='flex w-full flex-grow flex-col items-center space-y-4'>
-        <div className='flex w-full flex-col items-center space-y-2'>
-          <h2>{podcastEpisode.trackName}</h2>
-          <h3>
-            <Link
-              href={`/podcasts/${params.id}`}
-              className='text-cb-pink hover:text-cb-pink/75'
-            >
-              {podcast.trackName}
-            </Link>
-          </h3>
-        </div>
+      <div className='flex w-full flex-grow flex-col space-y-4'>
+        <Link
+          href={`/podcasts/${params.id}`}
+          className='text-cb-pink hover:text-cb-pink/75'
+        >
+          {podcast.trackName}
+        </Link>
+        <h2>{podcastEpisode.trackName}</h2>
         <Notes episodeId={params.episodeId} />
       </div>
     </Main>

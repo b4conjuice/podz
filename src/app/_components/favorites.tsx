@@ -12,7 +12,7 @@ export default function Favorites({ favorites }: { favorites: Podcast[] }) {
     return null
   }
   return (
-    <div className='w-full space-y-4'>
+    <>
       <h2>favorites</h2>
       <ul className='divide-y divide-cb-dusty-blue'>
         {favorites.map(favorite => (
@@ -36,6 +36,6 @@ export default function Favorites({ favorites }: { favorites: Podcast[] }) {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   )
 }

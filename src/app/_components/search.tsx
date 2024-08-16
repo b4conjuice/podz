@@ -43,7 +43,7 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
     }
   }, [query, setSearch])
   return (
-    <div className='w-full space-y-4'>
+    <>
       <h2>search</h2>
       <input
         ref={searchRef}
@@ -95,6 +95,6 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
           ))}
         </ul>
       ) : null}
-    </div>
+    </>
   )
 }

@@ -40,8 +40,8 @@ export default async function PodcastPage({
   }
   return (
     <Main className='flex flex-col px-4'>
-      <div className='flex w-full flex-grow flex-col items-center space-y-4'>
-        <Title>{podcast.trackName}</Title>
+      <div className='flex flex-grow flex-col space-y-4'>
+        <h2>{podcast.trackName}</h2>
         {podcastEpisodes?.length && podcastEpisodes?.length > 0 ? (
           <ul className='divide-y divide-cb-dusty-blue'>
             {podcastEpisodes.map(podcastEpisode => (
