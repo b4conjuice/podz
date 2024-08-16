@@ -1,34 +1,18 @@
 import Link from 'next/link'
 import { format, isThisYear } from 'date-fns'
 
-import { Main, Title } from '@/components/ui'
+import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
-import { type Podcast } from '@/lib/types'
-
-type PodcastEpisode = {
-  trackId: number
-  trackName: string
-  shortDescription: string
-  description: string
-  trackViewUrl: string
-  releaseDate: string
-}
-
-type PodcastResponse = {
-  resultCount: number
-  results: [Podcast, ...Array<PodcastEpisode>]
-}
-
-const SEARCH_PODCAST_EPISODES_API = (podcastId: string) =>
-  `https://itunes.apple.com/lookup?id=${podcastId}&country=US&entity=podcastEpisode`
+import { type PodcastEpisodesResponse } from '@/lib/types'
+import { LOOKUP_PODCAST_EPISODES_API } from '@/lib/api'
 
 export default async function PodcastPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const podcastResponse = await fetcher<PodcastResponse>(
-    SEARCH_PODCAST_EPISODES_API(params.id)
+  const podcastResponse = await fetcher<PodcastEpisodesResponse>(
+    LOOKUP_PODCAST_EPISODES_API(params.id)
   )
   const [podcast, ...podcastEpisodes] = podcastResponse.results
   if (!podcast) {

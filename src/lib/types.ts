@@ -5,3 +5,17 @@ export type Podcast = {
   artistName: string
   primaryGenreName: string
 }
+
+export type PodcastEpisode = {
+  trackId: number
+  trackName: string
+  shortDescription: string
+  description: string
+  trackViewUrl: string
+  releaseDate: string
+}
+
+export type PodcastEpisodesResponse = {
+  resultCount: number
+  results: [Podcast, ...Array<PodcastEpisode>]
+}
