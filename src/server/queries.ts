@@ -2,7 +2,7 @@
 
 import 'server-only'
 
-import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
 import { and, eq } from 'drizzle-orm'
 
@@ -29,7 +29,7 @@ export async function getFavorites() {
   }))
 }
 
-export async function addFavorite(podcast: Podcast) {
+export async function addFavorite(podcast: Podcast, currentPath = '/') {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
@@ -44,10 +44,9 @@ export async function addFavorite(podcast: Podcast) {
   }
 
   await db.insert(favorites).values(favorite)
-  redirect('/')
+  revalidatePath(currentPath)
 }
-export async function deleteFavorite(id: number) {
-  console.log('delete favorite')
+export async function deleteFavorite(id: number, currentPath = '/') {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
@@ -57,5 +56,5 @@ export async function deleteFavorite(id: number) {
     .where(and(eq(favorites.trackId, id), eq(favorites.userId, user.userId)))
     .returning({ deletedId: favorites.id })
 
-  redirect('/')
+  revalidatePath(currentPath)
 }

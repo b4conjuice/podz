@@ -5,6 +5,7 @@ import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { type PodcastEpisodesResponse } from '@/lib/types'
 import { LOOKUP_PODCAST_EPISODES_API } from '@/lib/api'
+import ToggleFavoritesButton from '@/app/_components/toggleFavoritesButton'
 
 export default async function PodcastPage({
   params,
@@ -25,7 +26,10 @@ export default async function PodcastPage({
   return (
     <Main className='flex flex-col px-4'>
       <div className='flex flex-grow flex-col space-y-4'>
-        <h2>{podcast.trackName}</h2>
+        <div className='flex items-center space-x-4'>
+          <h2>{podcast.trackName}</h2>
+          <ToggleFavoritesButton podcast={podcast} />
+        </div>
         {podcastEpisodes?.length && podcastEpisodes?.length > 0 ? (
           <ul className='divide-y divide-cb-dusty-blue'>
             {podcastEpisodes.map(podcastEpisode => (
