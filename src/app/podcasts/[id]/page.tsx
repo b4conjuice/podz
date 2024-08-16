@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { format, isThisYear } from 'date-fns'
 
 import { Main, Title } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
@@ -10,11 +11,12 @@ type PodcastEpisode = {
   shortDescription: string
   description: string
   trackViewUrl: string
+  releaseDate: string
 }
 
 type PodcastResponse = {
   resultCount: number
-  results: Array<Podcast | PodcastEpisode>
+  results: [Podcast, ...Array<PodcastEpisode>]
 }
 
 const SEARCH_PODCAST_EPISODES_API = (podcastId: string) =>
@@ -48,7 +50,15 @@ export default async function PodcastPage({
                   href={`/podcasts/${params.id}/${podcastEpisode.trackId}`}
                   className='text-cb-pink hover:text-cb-pink/75'
                 >
-                  {podcastEpisode.trackName}
+                  <div>{podcastEpisode.trackName}</div>
+                  <div className='text-sm text-cb-white'>
+                    {format(
+                      podcastEpisode.releaseDate,
+                      isThisYear(podcastEpisode.releaseDate)
+                        ? 'MMM d'
+                        : 'MMM d, yyyy'
+                    )}
+                  </div>
                 </Link>
               </li>
             ))}
