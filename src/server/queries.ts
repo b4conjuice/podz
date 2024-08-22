@@ -58,3 +58,13 @@ export async function deleteFavorite(id: number, currentPath = '/') {
 
   revalidatePath(currentPath)
 }
+
+export async function toggleFavorite(podcast: Podcast, currentPath = '/') {
+  const favorites = await getFavorites()
+  const isFavorite = favorites.find(f => f.trackId === podcast.trackId)
+  if (isFavorite) {
+    await deleteFavorite(podcast.trackId, currentPath)
+  } else {
+    await addFavorite(podcast, currentPath)
+  }
+}
