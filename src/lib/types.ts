@@ -19,3 +19,11 @@ export type PodcastEpisodesResponse = {
   resultCount: number
   results: [Podcast, ...Array<PodcastEpisode>]
 }
+
+export type Note = {
+  id?: number
+  podcastEpisodeId: number
+  text: string
+  title: string
+  body: string
+}

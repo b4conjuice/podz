@@ -42,7 +42,7 @@ export default async function EpisodePage({
           {podcast.trackName}
         </Link>
         <h2>{podcastEpisode.trackName}</h2>
-        <Notes episodeId={params.episodeId} />
+        <Notes episode={podcastEpisode} />
       </div>
     </Main>
   )

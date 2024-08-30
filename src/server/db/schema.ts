@@ -9,6 +9,7 @@ import {
   timestamp,
   varchar,
   integer,
+  bigint,
 } from 'drizzle-orm/pg-core'
 
 /**
@@ -57,3 +58,18 @@ export const favorites = createTable(
     nameIndex: index('name_idx').on(example.trackName),
   })
 )
+
+export const notes = createTable('note', {
+  id: serial('id').primaryKey(),
+  podcastEpisodeId: bigint('podcast_episode_id', { mode: 'number' }).notNull(),
+  text: varchar('text').notNull(),
+  title: varchar('title', { length: 256 }).notNull(),
+  body: varchar('body').notNull(),
+  author: varchar('author', { length: 256 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(
+    () => new Date()
+  ),
+})

@@ -6,9 +6,9 @@ import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
 import { and, eq } from 'drizzle-orm'
 
-import { type Podcast } from '@/lib/types'
+import { type Note, type Podcast } from '@/lib/types'
 import { db } from './db'
-import { favorites } from './db/schema'
+import { favorites, notes } from './db/schema'
 
 export async function getFavorites() {
   const user = auth()
@@ -46,6 +46,7 @@ export async function addFavorite(podcast: Podcast, currentPath = '/') {
   await db.insert(favorites).values(favorite)
   revalidatePath(currentPath)
 }
+
 export async function deleteFavorite(id: number, currentPath = '/') {
   const user = auth()
 
@@ -67,4 +68,37 @@ export async function toggleFavorite(podcast: Podcast, currentPath = '/') {
   } else {
     await addFavorite(podcast, currentPath)
   }
+}
+
+export async function saveNote(note: Note, currentPath = '/') {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  await db
+    .insert(notes)
+    .values({
+      ...note,
+      author: user.userId,
+    })
+    .onConflictDoUpdate({
+      target: notes.id,
+      set: {
+        text: note.text,
+        title: note.title,
+        body: note.body,
+      },
+    })
+  revalidatePath(currentPath)
+}
+
+export async function getNote(podcastEpisodeId: number) {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  const note = await db.query.notes.findFirst({
+    where: (model, { eq }) => eq(model.podcastEpisodeId, podcastEpisodeId),
+  })
+  return note
 }
