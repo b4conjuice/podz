@@ -13,7 +13,8 @@ export default async function PodcastPage({
   params: { id: string }
 }) {
   const podcastResponse = await fetcher<PodcastEpisodesResponse>(
-    LOOKUP_PODCAST_EPISODES_API(params.id)
+    LOOKUP_PODCAST_EPISODES_API(params.id),
+    { cache: 'no-store' }
   )
   const [podcast, ...podcastEpisodes] = podcastResponse.results
   if (!podcast) {
