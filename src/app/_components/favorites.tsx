@@ -16,7 +16,7 @@ export default function Favorites({ favorites }: { favorites: Podcast[] }) {
       <h2>favorites</h2>
       <ul className='divide-y divide-cb-dusty-blue'>
         {favorites.map(favorite => (
-          <li key={favorite.trackId} className='flex py-4 first:pt-0'>
+          <li key={favorite.trackId} className='flex py-4 first:pt-0 last:pb-0'>
             <Link
               href={`/podcasts/${favorite.trackId}`}
               className='grow text-cb-pink hover:text-cb-pink/75'

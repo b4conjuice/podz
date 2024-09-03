@@ -2,7 +2,13 @@ import { Button } from '@/components/ui'
 import { type PodcastEpisode } from '@/lib/types'
 import { getNote, saveNote } from '@/server/queries'
 
-export default async function Notes({ episode }: { episode: PodcastEpisode }) {
+export default async function Notes({
+  podcastId,
+  episode,
+}: {
+  podcastId: number
+  episode: PodcastEpisode
+}) {
   const note = await getNote(episode.trackId)
   const handleSubmit = async (formData: FormData) => {
     'use server'
@@ -11,6 +17,7 @@ export default async function Notes({ episode }: { episode: PodcastEpisode }) {
     const text = `${title}\n\n${body}`
     const newNote = {
       id: note?.id,
+      podcastId,
       podcastEpisodeId: episode.trackId,
       text,
       title,

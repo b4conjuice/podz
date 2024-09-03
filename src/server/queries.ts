@@ -92,13 +92,29 @@ export async function saveNote(note: Note, currentPath = '/') {
   revalidatePath(currentPath)
 }
 
+export async function getNotes() {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  const notes = await db.query.notes.findMany({
+    where: (model, { eq }) => eq(model.author, user.userId),
+  })
+  return notes
+}
+
 export async function getNote(podcastEpisodeId: number) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
 
   const note = await db.query.notes.findFirst({
-    where: (model, { eq }) => eq(model.podcastEpisodeId, podcastEpisodeId),
+    where: (model, { eq }) =>
+      and(
+        eq(model.podcastEpisodeId, podcastEpisodeId),
+        eq(model.author, user.userId)
+      ),
   })
+
   return note
 }

@@ -61,6 +61,7 @@ export const favorites = createTable(
 
 export const notes = createTable('note', {
   id: serial('id').primaryKey(),
+  podcastId: bigint('podcast_id', { mode: 'number' }).notNull(),
   podcastEpisodeId: bigint('podcast_episode_id', { mode: 'number' }).notNull(),
   text: varchar('text').notNull(),
   title: varchar('title', { length: 256 }).notNull(),
