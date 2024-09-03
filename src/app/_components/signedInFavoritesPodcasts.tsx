@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import { TrashIcon } from '@heroicons/react/24/solid'
 
 import Search from './search'
 import Favorites from './favorites'
-import { getFavorites, getNotes } from '@/server/queries'
+import { deleteNote, getFavorites, getNotes } from '@/server/queries'
 
 export default async function SignedInFavoritePodcasts() {
   const favorites = await getFavorites()
@@ -23,6 +24,16 @@ export default async function SignedInFavoritePodcasts() {
                 >
                   {note.title}
                 </Link>
+                <form
+                  action={async () => {
+                    'use server'
+                    await deleteNote(note.id)
+                  }}
+                >
+                  <button type='submit'>
+                    <TrashIcon className='h-6 w-6 text-red-600 hover:text-red-600/75' />
+                  </button>
+                </form>
               </li>
             ))}
           </ul>

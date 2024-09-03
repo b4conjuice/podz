@@ -118,3 +118,14 @@ export async function getNote(podcastEpisodeId: number) {
 
   return note
 }
+
+export async function deleteNote(id: number, currentPath = '/') {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  await db
+    .delete(notes)
+    .where(and(eq(notes.id, id), eq(notes.author, user.userId)))
+  revalidatePath(currentPath)
+}
