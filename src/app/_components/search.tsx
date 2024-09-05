@@ -53,7 +53,6 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
   }, [query, setSearch])
   return (
     <>
-      <h2>search</h2>
       <Combobox
         as='div'
         onChange={(podcast: Podcast) => {
@@ -71,7 +70,7 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
               router.push(url)
             }}
             className='h-12 w-full border-0 bg-transparent placeholder-cb-yellow/75 focus:outline-0 focus:ring-0'
-            placeholder='enter a podcast name'
+            placeholder='search apple podcasts'
             value={search}
           />
         </div>
