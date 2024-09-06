@@ -1,24 +1,16 @@
-'use client'
-
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'
-import { usePathname } from 'next/navigation'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+import { auth, clerkClient } from '@clerk/nextjs/server'
 
-import { Title } from '@/components/ui'
-import Username from './username'
-import Link from 'next/link'
+import TopNavTitle from './topNavTitle'
 
-export default function TopNav() {
-  const pathname = usePathname()
+export default async function TopNav() {
+  const { userId }: { userId: string | null } = auth()
+  const user = userId ? await clerkClient.users.getUser(userId) : null
+  const username = user?.username
   return (
     <div className='mb-4 flex w-full items-center px-4 pt-4'>
-      {pathname === '/' ? (
-        <Title>podz</Title>
-      ) : (
-        <Link href='/' className='hover:text-cb-pink'>
-          <Title>podz</Title>
-        </Link>
-      )}
+      <TopNavTitle />
       <div className='flex flex-grow justify-end'>
         <SignedOut>
           <SignInButton>
@@ -27,7 +19,7 @@ export default function TopNav() {
         </SignedOut>
         <SignedIn>
           <div className='flex space-x-2 text-cb-white'>
-            <Username />
+            {username && <span>{username}</span>}
             <UserButton />
           </div>
         </SignedIn>
