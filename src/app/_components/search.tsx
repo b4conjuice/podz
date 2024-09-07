@@ -36,7 +36,8 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
   useEffect(() => {
     async function fetchData() {
       const newPodcasts = await fetcher<Podcast[]>(
-        `/api/podcasts/search?term=${debouncedSearch}`
+        `/api/podcasts/search?term=${debouncedSearch}`,
+        { cache: 'no-store' }
       )
       setResults(newPodcasts)
     }
