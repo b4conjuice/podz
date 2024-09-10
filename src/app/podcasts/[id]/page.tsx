@@ -19,13 +19,13 @@ export default async function PodcastPage({
   const [podcast, ...podcastEpisodes] = podcastResponse.results
   if (!podcast) {
     return (
-      <Main className='flex flex-col px-4'>
+      <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
         <p>no podcast found</p>
       </Main>
     )
   }
   return (
-    <Main className='flex flex-col px-4'>
+    <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
       <div className='flex flex-grow flex-col space-y-4'>
         <div className='flex items-center space-x-4'>
           <h2>{podcast.trackName}</h2>

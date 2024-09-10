@@ -28,13 +28,13 @@ export default async function EpisodePage({
   )
   if (!podcastEpisode) {
     return (
-      <Main className='flex flex-col px-4'>
+      <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
         <p>no podcast episode found</p>
       </Main>
     )
   }
   return (
-    <Main className='flex flex-col px-4 pb-4'>
+    <Main className='container mx-auto flex max-w-screen-md flex-col px-4 pb-4 md:px-0'>
       <div className='flex w-full flex-grow flex-col space-y-4'>
         <Link
           href={`/podcasts/${params.id}`}

@@ -9,7 +9,7 @@ export default async function TopNav() {
   const user = userId ? await clerkClient.users.getUser(userId) : null
   const username = user?.username
   return (
-    <div className='mb-4 flex w-full items-center px-4 pt-4'>
+    <div className='container mx-auto mb-4 flex w-full max-w-screen-md items-center px-4 pt-4 md:px-0'>
       <TopNavTitle />
       <div className='flex flex-grow justify-end'>
         <SignedOut>
