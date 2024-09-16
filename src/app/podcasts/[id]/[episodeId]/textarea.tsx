@@ -20,7 +20,7 @@ export default function Textarea({ note }: { note: Note }) {
       }
       await saveNote(updatedNote)
     }
-    if (isSignedIn) {
+    if (isSignedIn && debouncedBody !== note.body) {
       void updateNote()
     }
   }, [debouncedBody])
