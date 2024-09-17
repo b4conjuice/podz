@@ -19,7 +19,7 @@ export default async function SignedInFavoritePodcasts() {
             {notes.map(note => (
               <li key={note.id} className='flex py-4 first:pt-0 last:pb-0'>
                 <Link
-                  href={`/podcasts/${note.podcastId}/${note.podcastEpisodeId}`}
+                  href={`/notes/${note.id}`}
                   className='grow text-cb-pink hover:text-cb-pink/75'
                 >
                   {note.title}

@@ -8,7 +8,7 @@ import { and, eq } from 'drizzle-orm'
 
 import { type Note, type Podcast } from '@/lib/types'
 import { db } from './db'
-import { favorites, notes } from './db/schema'
+import { favorites, notes, podcastEpisodes } from './db/schema'
 
 export async function getFavorites() {
   const user = auth()
@@ -70,12 +70,12 @@ export async function toggleFavorite(podcast: Podcast, currentPath = '/') {
   }
 }
 
-export async function saveNote(note: Note, currentPath = '/') {
+export async function saveNote(note: Note) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
 
-  await db
+  const newNotes = await db
     .insert(notes)
     .values({
       ...note,
@@ -89,7 +89,12 @@ export async function saveNote(note: Note, currentPath = '/') {
         body: note.body,
       },
     })
-  revalidatePath(currentPath)
+    .returning()
+
+  if (!newNotes || newNotes.length < 0) throw new Error('something went wrong')
+  const newNote = newNotes[0]
+  if (!newNote) throw new Error('something went wrong')
+  return newNote.id
 }
 
 export async function getNotes() {
@@ -104,17 +109,14 @@ export async function getNotes() {
   return notes
 }
 
-export async function getNote(podcastEpisodeId: number) {
+export async function getNote(noteId: number) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
 
   const note = await db.query.notes.findFirst({
     where: (model, { eq }) =>
-      and(
-        eq(model.podcastEpisodeId, podcastEpisodeId),
-        eq(model.author, user.userId)
-      ),
+      and(eq(model.id, noteId), eq(model.author, user.userId)),
   })
 
   return note
@@ -125,8 +127,54 @@ export async function deleteNote(id: number, currentPath = '/') {
 
   if (!user.userId) throw new Error('unauthorized')
 
+  await db.delete(podcastEpisodes).where(and(eq(podcastEpisodes.noteId, id)))
+
   await db
     .delete(notes)
     .where(and(eq(notes.id, id), eq(notes.author, user.userId)))
+  revalidatePath(currentPath)
+}
+
+type PodcastEpisode = {
+  podcastId: number
+  podcastEpisodeId: number
+  noteId: number
+}
+
+export async function getPodcastEpisodeRelation({
+  podcastId,
+  podcastEpisodeId,
+}: {
+  podcastId: number
+  podcastEpisodeId: number
+}) {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  const podcastEpisode = await db.query.podcastEpisodes.findFirst({
+    where: (model, { eq }) =>
+      and(
+        eq(model.podcastId, podcastId),
+        eq(model.podcastEpisodeId, podcastEpisodeId)
+      ),
+  })
+
+  return podcastEpisode
+}
+
+export async function savePodcastEpisodeRelation(
+  episode: PodcastEpisode,
+  currentPath = '/'
+) {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  await db.insert(podcastEpisodes).values({
+    podcastId: episode.podcastId,
+    podcastEpisodeId: episode.podcastEpisodeId,
+    noteId: episode.noteId,
+  })
   revalidatePath(currentPath)
 }

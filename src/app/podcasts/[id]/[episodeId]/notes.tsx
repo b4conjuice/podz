@@ -1,9 +1,14 @@
 import { revalidatePath } from 'next/cache'
 
-import Textarea from './textarea'
+import Textarea from '@/app/_components/textarea'
 import { Button } from '@/components/ui'
 import { type PodcastEpisode } from '@/lib/types'
-import { getNote, saveNote } from '@/server/queries'
+import {
+  getNote,
+  getPodcastEpisodeRelation,
+  saveNote,
+  savePodcastEpisodeRelation,
+} from '@/server/queries'
 
 export default async function Notes({
   podcastId,
@@ -12,8 +17,11 @@ export default async function Notes({
   podcastId: number
   episode: PodcastEpisode
 }) {
-  const note = await getNote(episode.trackId)
-  if (!note) {
+  const podcastEpisode = await getPodcastEpisodeRelation({
+    podcastId,
+    podcastEpisodeId: episode.trackId,
+  })
+  if (!podcastEpisode) {
     return (
       <form
         className='flex flex-grow flex-col'
@@ -23,14 +31,18 @@ export default async function Notes({
           const body = ''
           const text = `${title}\n\n${body}`
           const newNote = {
-            podcastId,
-            podcastEpisodeId: episode.trackId,
             text,
             title,
             body,
           }
-          await saveNote(newNote)
-          revalidatePath(`/podcasts/${podcastId}/episodes/${episode.trackId}`)
+          const noteId = await saveNote(newNote)
+          const newPodcastEpisode = {
+            podcastId,
+            podcastEpisodeId: episode.trackId,
+            noteId,
+          }
+          await savePodcastEpisodeRelation(newPodcastEpisode)
+          revalidatePath(`/podcasts/${podcastId}/${episode.trackId}`)
         }}
       >
         <div className='flex flex-grow flex-col space-y-4'>
@@ -39,13 +51,18 @@ export default async function Notes({
       </form>
     )
   }
+  if (!podcastEpisode.noteId) {
+    return <p>no note found for this episode</p>
+  }
+  const note = await getNote(podcastEpisode.noteId)
+  if (!note) {
+    return <p>no note found for this episode</p>
+  }
 
   return (
     <Textarea
       note={{
         id: note.id,
-        podcastId,
-        podcastEpisodeId: episode.trackId,
         title: episode.trackName,
         body: note.body,
         text: `${episode.trackName}\n\n${note?.body}`,

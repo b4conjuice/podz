@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   index,
   pgTableCreator,
@@ -61,8 +61,6 @@ export const favorites = createTable(
 
 export const notes = createTable('note', {
   id: serial('id').primaryKey(),
-  podcastId: bigint('podcast_id', { mode: 'number' }).notNull(),
-  podcastEpisodeId: bigint('podcast_episode_id', { mode: 'number' }).notNull(),
   text: varchar('text').notNull(),
   title: varchar('title', { length: 256 }).notNull(),
   body: varchar('body').notNull(),
@@ -74,3 +72,26 @@ export const notes = createTable('note', {
     () => new Date()
   ),
 })
+
+export const podcastEpisodes = createTable('podcast_episode', {
+  id: serial('id').primaryKey(),
+  podcastId: bigint('podcast_id', { mode: 'number' }).notNull(),
+  podcastEpisodeId: bigint('podcast_episode_id', { mode: 'number' }).notNull(),
+  noteId: integer('note_id').references(() => notes.id),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(
+    () => new Date()
+  ),
+})
+
+export const podcastEpisodesRelations = relations(
+  podcastEpisodes,
+  ({ one }) => ({
+    note: one(notes, {
+      fields: [podcastEpisodes.noteId],
+      references: [notes.id],
+    }),
+  })
+)
