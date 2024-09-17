@@ -10,6 +10,7 @@ import {
   varchar,
   integer,
   bigint,
+  pgTable,
 } from 'drizzle-orm/pg-core'
 
 /**
@@ -18,10 +19,9 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createNotesTable = pgTableCreator(name => `n4_${name}`)
 export const createTable = pgTableCreator(name => `podz_${name}`)
 
-export const notes = createNotesTable('note', {
+export const notes = pgTable('n4_note', {
   id: serial('id').primaryKey(),
   text: varchar('text').notNull(),
   title: varchar('title', { length: 256 }).notNull(),
