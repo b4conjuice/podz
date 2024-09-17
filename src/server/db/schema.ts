@@ -18,24 +18,22 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator(name => `n4_${name}`)
+export const createNotesTable = pgTableCreator(name => `n4_${name}`)
+export const createTable = pgTableCreator(name => `podz_${name}`)
 
-// export const posts = createTable(
-//   "post",
-//   {
-//     id: serial("id").primaryKey(),
-//     name: varchar("name", { length: 256 }),
-//     createdAt: timestamp("created_at", { withTimezone: true })
-//       .default(sql`CURRENT_TIMESTAMP`)
-//       .notNull(),
-//     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-//       () => new Date()
-//     ),
-//   },
-//   (example) => ({
-//     nameIndex: index("name_idx").on(example.name),
-//   })
-// );
+export const notes = createNotesTable('note', {
+  id: serial('id').primaryKey(),
+  text: varchar('text').notNull(),
+  title: varchar('title', { length: 256 }).notNull(),
+  body: varchar('body').notNull(),
+  author: varchar('author', { length: 256 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(
+    () => new Date()
+  ),
+})
 
 export const favorites = createTable(
   'favorite',
@@ -58,20 +56,6 @@ export const favorites = createTable(
     nameIndex: index('name_idx').on(example.trackName),
   })
 )
-
-export const notes = createTable('note', {
-  id: serial('id').primaryKey(),
-  text: varchar('text').notNull(),
-  title: varchar('title', { length: 256 }).notNull(),
-  body: varchar('body').notNull(),
-  author: varchar('author', { length: 256 }).notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(
-    () => new Date()
-  ),
-})
 
 export const podcastEpisodes = createTable('podcast_episode', {
   id: serial('id').primaryKey(),
