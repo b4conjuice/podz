@@ -4,7 +4,7 @@ import 'server-only'
 
 import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 import { type Note, type Podcast } from '@/lib/types'
 import { db } from './db'
@@ -102,11 +102,16 @@ export async function getNotes() {
 
   if (!user.userId) throw new Error('unauthorized')
 
-  const notes = await db.query.notes.findMany({
-    where: (model, { eq }) => eq(model.author, user.userId),
-    orderBy: (model, { desc }) => desc(model.updatedAt),
-  })
-  return notes
+  const results = await db
+    .select()
+    .from(notes)
+    .leftJoin(podcastEpisodes, eq(notes.id, podcastEpisodes.noteId))
+    .where(eq(notes.author, user.userId))
+    .orderBy(desc(notes.updatedAt))
+
+  return results
+    .filter(result => result.podcast_episode)
+    .map(result => result.n4_note)
 }
 
 export async function getNote(noteId: number) {
