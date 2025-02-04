@@ -20,9 +20,14 @@ export type PodcastEpisodesResponse = {
   results: [Podcast, ...Array<PodcastEpisode>]
 }
 
-export type Note = {
+export type EditableNote = {
   id?: number
   text: string
   title: string
   body: string
+  tags: string[]
 }
+
+export type Note = {
+  author: string
+} & EditableNote

@@ -11,6 +11,7 @@ import {
   integer,
   bigint,
   pgTable,
+  text,
 } from 'drizzle-orm/pg-core'
 
 /**
@@ -27,6 +28,7 @@ export const notes = pgTable('n4_note', {
   title: varchar('title', { length: 256 }).notNull(),
   body: varchar('body').notNull(),
   author: varchar('author', { length: 256 }).notNull(),
+  tags: text('tags').array().notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

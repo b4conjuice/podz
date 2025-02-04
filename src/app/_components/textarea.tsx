@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useDebounce } from '@uidotdev/usehooks'
 
-import { type Note } from '@/lib/types'
+import { type EditableNote } from '@/lib/types'
 import { saveNote } from '@/server/queries'
 
-export default function Textarea({ note }: { note: Note }) {
+export default function Textarea({ note }: { note: EditableNote }) {
   const { isSignedIn } = useAuth()
   const [body, setBody] = useState(note.body)
   const debouncedBody = useDebounce(body, 500)

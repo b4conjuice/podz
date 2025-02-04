@@ -37,6 +37,7 @@ export default async function NotePage({ params }: { params: { id: string } }) {
             title: note.title,
             body: note.body,
             text: `${note.title}\n\n${note?.body}`,
+            tags: note.tags,
           }}
         />
       </div>

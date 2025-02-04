@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
 import { and, desc, eq } from 'drizzle-orm'
 
-import { type Note, type Podcast } from '@/lib/types'
+import { type Podcast, type EditableNote } from '@/lib/types'
 import { db } from './db'
 import { favorites, notes, podcastEpisodes } from './db/schema'
 
@@ -70,16 +70,22 @@ export async function toggleFavorite(podcast: Podcast, currentPath = '/') {
   }
 }
 
-export async function saveNote(note: Note) {
+const PODCAST_TAG = '🎧'
+
+export async function saveNote(note: EditableNote) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
+
+  const tags = note?.tags ?? []
+  const newTags = tags.includes(PODCAST_TAG) ? tags : [...tags, PODCAST_TAG]
 
   const newNotes = await db
     .insert(notes)
     .values({
       ...note,
       author: user.userId,
+      tags: newTags,
     })
     .onConflictDoUpdate({
       target: notes.id,
@@ -87,6 +93,7 @@ export async function saveNote(note: Note) {
         text: note.text,
         title: note.title,
         body: note.body,
+        tags: newTags,
       },
     })
     .returning()
