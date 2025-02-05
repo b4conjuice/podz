@@ -34,6 +34,7 @@ export default async function Notes({
             text,
             title,
             body,
+            list: [],
             tags: [],
           }
           const noteId = await saveNote(newNote)
@@ -67,6 +68,7 @@ export default async function Notes({
         title: episode.trackName,
         body: note.body,
         text: `${episode.trackName}\n\n${note?.body}`,
+        list: note.list,
         tags: note.tags,
       }}
     />

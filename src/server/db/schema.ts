@@ -27,6 +27,7 @@ export const notes = pgTable('n4_note', {
   text: varchar('text').notNull(),
   title: varchar('title', { length: 256 }).notNull(),
   body: varchar('body').notNull(),
+  list: text('list').array().notNull(),
   author: varchar('author', { length: 256 }).notNull(),
   tags: text('tags').array().notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })

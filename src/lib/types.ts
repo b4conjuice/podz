@@ -25,6 +25,7 @@ export type EditableNote = {
   text: string
   title: string
   body: string
+  list: string[]
   tags: string[]
 }
 
