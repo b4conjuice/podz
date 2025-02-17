@@ -42,10 +42,10 @@ export default async function PodcastPage({
           {podcastEpisodes?.length && podcastEpisodes?.length > 0 ? (
             <ul className='divide-y divide-cb-dusty-blue'>
               {podcastEpisodes.map(podcastEpisode => (
-                <li key={podcastEpisode.trackId} className='py-4 first:pt-0'>
+                <li key={podcastEpisode.trackId} className='group'>
                   <Link
                     href={`/podcasts/${params.id}/${podcastEpisode.trackId}`}
-                    className='text-cb-pink hover:text-cb-pink/75'
+                    className='block py-4 text-cb-pink hover:text-cb-pink/75 group-first:pt-0'
                   >
                     <div>{podcastEpisode.trackName}</div>
                     <div className='text-sm text-cb-white'>
