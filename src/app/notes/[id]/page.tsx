@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 import { Main } from '@/components/ui'
 import Textarea from '@/app/_components/textarea'
 import { getNote } from '@/server/queries'
+import TopNav from '@/app/_components/topNav'
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const user = auth()
@@ -25,6 +26,7 @@ export default async function NotePage({ params }: { params: { id: string } }) {
   }
   return (
     <>
+      <TopNav />
       <Main className='container mx-auto flex max-w-screen-md flex-col'>
         <div className='flex w-full flex-grow flex-col space-y-4'>
           {/* <Link // TODO: Maybe add back podcast link?

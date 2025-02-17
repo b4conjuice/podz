@@ -31,7 +31,6 @@ export default function RootLayout({
       <html lang='en'>
         <body>
           <div className='flex min-h-screen flex-col bg-cb-dark-blue text-cb-white'>
-            <TopNav />
             {children}
           </div>
         </body>

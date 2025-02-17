@@ -6,6 +6,7 @@ import fetcher from '@/lib/fetcher'
 import { type PodcastEpisodesResponse } from '@/lib/types'
 import { LOOKUP_PODCAST_EPISODES_API } from '@/lib/api'
 import Notes from './notes'
+import TopNav from '@/app/_components/topNav'
 
 export default async function EpisodePage({
   params,
@@ -29,13 +30,17 @@ export default async function EpisodePage({
   )
   if (!podcastEpisode) {
     return (
-      <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
-        <p>no podcast episode found</p>
-      </Main>
+      <>
+        <TopNav />
+        <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
+          <p>no podcast episode found</p>
+        </Main>
+      </>
     )
   }
   return (
     <>
+      <TopNav />
       <Main className='container mx-auto flex max-w-screen-md flex-col'>
         <div className='flex w-full flex-grow flex-col space-y-4'>
           <h2 className='px-4'>{podcastEpisode.trackName}</h2>
