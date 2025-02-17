@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 import { format, isThisYear } from 'date-fns'
 
 import { Main } from '@/components/ui'
@@ -30,13 +31,14 @@ export default async function PodcastPage({
   }
   return (
     <>
-      <TopNav />
+      <TopNav>
+        <div className='flex items-center space-x-4'>
+          <h2>{podcast.trackName}</h2>
+          <ToggleFavoritesButton podcast={podcast} />
+        </div>
+      </TopNav>
       <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
         <div className='flex flex-grow flex-col space-y-4'>
-          <div className='flex items-center space-x-4'>
-            <h2>{podcast.trackName}</h2>
-            <ToggleFavoritesButton podcast={podcast} />
-          </div>
           {podcastEpisodes?.length && podcastEpisodes?.length > 0 ? (
             <ul className='divide-y divide-cb-dusty-blue'>
               {podcastEpisodes.map(podcastEpisode => (
@@ -63,6 +65,14 @@ export default async function PodcastPage({
           )}
         </div>
       </Main>
+      <footer className='sticky bottom-0 flex items-center justify-between bg-cb-dusty-blue px-2 pb-4 pt-2'>
+        <div className='flex space-x-4'>
+          <Link href='/' className='text-cb-yellow hover:text-cb-yellow/75'>
+            <ChevronLeftIcon className='h-6 w-6' />
+          </Link>
+        </div>
+        <div className='flex space-x-4'></div>
+      </footer>
     </>
   )
 }
