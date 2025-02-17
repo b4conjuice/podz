@@ -26,7 +26,7 @@ export default function Textarea({ note }: { note: EditableNote }) {
   }, [debouncedBody])
   return (
     <textarea
-      className='h-full w-full flex-grow bg-cobalt'
+      className='w-full flex-grow border-cobalt bg-cobalt caret-cb-yellow focus:border-cb-light-blue focus:ring-0'
       name='body'
       value={body}
       onChange={e => {

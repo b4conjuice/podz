@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ChevronLeftIcon } from '@heroicons/react/20/solid'
 
 import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
@@ -34,17 +35,24 @@ export default async function EpisodePage({
     )
   }
   return (
-    <Main className='container mx-auto flex max-w-screen-md flex-col px-4 pb-4 md:px-0'>
-      <div className='flex w-full flex-grow flex-col space-y-4'>
-        <Link
-          href={`/podcasts/${params.id}`}
-          className='text-cb-pink hover:text-cb-pink/75'
-        >
-          {podcast.trackName}
-        </Link>
-        <h2>{podcastEpisode.trackName}</h2>
-        <Notes podcastId={Number(params.id)} episode={podcastEpisode} />
-      </div>
-    </Main>
+    <>
+      <Main className='container mx-auto flex max-w-screen-md flex-col'>
+        <div className='flex w-full flex-grow flex-col space-y-4'>
+          <h2 className='px-4'>{podcastEpisode.trackName}</h2>
+          <Notes podcastId={Number(params.id)} episode={podcastEpisode} />
+        </div>
+      </Main>
+      <footer className='sticky bottom-0 flex items-center justify-between bg-cb-dusty-blue px-2 pb-4 pt-2'>
+        <div className='flex space-x-4'>
+          <Link
+            href={`/podcasts/${params.id}`}
+            className='flex items-center space-x-2 text-cb-yellow hover:text-cb-yellow/75'
+          >
+            <ChevronLeftIcon className='h-6 w-6' /> {podcast.trackName}
+          </Link>
+        </div>
+        <div className='flex space-x-4'></div>
+      </footer>
+    </>
   )
 }
