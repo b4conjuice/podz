@@ -20,9 +20,12 @@ export default async function EpisodePage({
   const [podcast, ...podcastEpisodes] = podcastResponse.results
   if (!podcast) {
     return (
-      <Main className='flex flex-col px-4'>
-        <p>no podcast found</p>
-      </Main>
+      <>
+        <TopNav />
+        <Main className='flex flex-col px-4'>
+          <p>no podcast found</p>
+        </Main>
+      </>
     )
   }
   const podcastEpisode = podcastEpisodes?.find(
@@ -40,10 +43,10 @@ export default async function EpisodePage({
   }
   return (
     <>
-      <TopNav />
+      <TopNav title={podcastEpisode.trackName} />
       <Main className='container mx-auto flex max-w-screen-md flex-col'>
         <div className='flex w-full flex-grow flex-col space-y-4'>
-          <h2 className='px-4'>{podcastEpisode.trackName}</h2>
+          {/* <h2 className='px-4'>{podcastEpisode.trackName}</h2> */}
           <Notes podcastId={Number(params.id)} episode={podcastEpisode} />
         </div>
       </Main>
