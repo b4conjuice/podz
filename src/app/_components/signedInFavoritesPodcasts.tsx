@@ -17,10 +17,10 @@ export default async function SignedInFavoritePodcasts() {
         {notes.length > 0 ? (
           <ul className='divide-y divide-cb-dusty-blue'>
             {notes.map(note => (
-              <li key={note.id} className='flex py-4 first:pt-0 last:pb-0'>
+              <li key={note.id} className='group flex items-center space-x-2'>
                 <Link
                   href={`/notes/${note.id}`}
-                  className='grow text-cb-pink hover:text-cb-pink/75'
+                  className='grow py-4 text-cb-pink hover:text-cb-pink/75 group-first:pt-0'
                 >
                   {note.title}
                 </Link>
