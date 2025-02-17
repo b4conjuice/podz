@@ -15,7 +15,8 @@ export default function TopNavTitle({
   const title = initialTitle ?? DEFAULT_TITLE
   return (
     <>
-      {pathname === '/' ? (
+      {pathname === '/' ||
+      (initialTitle !== undefined && initialTitle !== DEFAULT_TITLE) ? (
         <Title>{title}</Title>
       ) : (
         <Link href='/' className='hover:text-cb-pink'>
