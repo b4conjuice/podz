@@ -4,13 +4,13 @@ import { auth, clerkClient } from '@clerk/nextjs/server'
 
 import TopNavTitle from './topNavTitle'
 
-export default async function TopNav() {
+export default async function TopNav({ title }: { title?: string }) {
   const { userId }: { userId: string | null } = auth()
   const user = userId ? await clerkClient.users.getUser(userId) : null
   const username = user?.username
   return (
     <div className='container mx-auto mb-4 flex w-full max-w-screen-md items-center px-4 pt-4 md:px-0'>
-      <TopNavTitle />
+      <TopNavTitle title={title} />
       <div className='flex flex-grow justify-end'>
         <SignedOut>
           <SignInButton>

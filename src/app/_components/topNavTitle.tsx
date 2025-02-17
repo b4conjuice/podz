@@ -6,15 +6,20 @@ import Link from 'next/link'
 import { Title } from '@/components/ui'
 import { DEFAULT_TITLE } from '@/lib/defaults'
 
-export default function TopNavTitle() {
+export default function TopNavTitle({
+  title: initialTitle,
+}: {
+  title?: string
+}) {
   const pathname = usePathname()
+  const title = initialTitle ?? DEFAULT_TITLE
   return (
     <>
       {pathname === '/' ? (
-        <Title>{DEFAULT_TITLE}</Title>
+        <Title>{title}</Title>
       ) : (
         <Link href='/' className='hover:text-cb-pink'>
-          <Title>{DEFAULT_TITLE}</Title>
+          <Title>{title}</Title>
         </Link>
       )}
     </>
