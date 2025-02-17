@@ -2,8 +2,7 @@ import type { Viewport } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import '@/styles/globals.css'
-
-const DEFAULT_TITLE = 'podz'
+import { DEFAULT_TITLE } from '@/lib/defaults'
 
 export const metadata = {
   manifest: '/manifest.json',
