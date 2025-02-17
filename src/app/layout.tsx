@@ -2,7 +2,6 @@ import type { Viewport } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import '@/styles/globals.css'
-import TopNav from './_components/topNav'
 
 const DEFAULT_TITLE = 'podz'
 
