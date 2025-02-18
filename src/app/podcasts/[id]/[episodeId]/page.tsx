@@ -7,6 +7,7 @@ import { type PodcastEpisodesResponse } from '@/lib/types'
 import { LOOKUP_PODCAST_EPISODES_API } from '@/lib/api'
 import Notes from './notes'
 import TopNav from '@/app/_components/topNav'
+import DeleteButton from '@/app/_components/deleteButton'
 
 export default async function EpisodePage({
   params,
@@ -58,7 +59,9 @@ export default async function EpisodePage({
             <ChevronLeftIcon className='h-6 w-6' /> {podcast.trackName}
           </Link>
         </div>
-        <div className='flex space-x-4'></div>
+        <div className='flex space-x-4'>
+          <DeleteButton podcastEpisode={podcastEpisode} podcastId={params.id} />
+        </div>
       </footer>
     </>
   )

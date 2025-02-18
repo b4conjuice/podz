@@ -147,6 +147,34 @@ export async function deleteNote(id: number, currentPath = '/') {
   revalidatePath(currentPath)
 }
 
+export async function deleteNoteByEpisodeId(id: number, currentPath = '/') {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  const podcastEpisode = await db.query.podcastEpisodes.findFirst({
+    where: (model, { eq }) => and(eq(model.podcastEpisodeId, id)),
+  })
+
+  if (!podcastEpisode) throw new Error('something went wrong')
+
+  const noteId = podcastEpisode.noteId
+
+  if (!noteId) throw new Error('something went wrong')
+
+  console.log({
+    id,
+    noteId,
+  })
+
+  await db.delete(podcastEpisodes).where(eq(podcastEpisodes.noteId, noteId))
+
+  await db
+    .delete(notes)
+    .where(and(eq(notes.id, noteId), eq(notes.author, user.userId)))
+  revalidatePath(currentPath)
+}
+
 type PodcastEpisode = {
   podcastId: number
   podcastEpisodeId: number
