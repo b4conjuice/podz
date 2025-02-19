@@ -11,7 +11,7 @@ import { type PodcastEpisode } from '@/lib/types'
 type Params =
   | {
       podcastEpisode: PodcastEpisode
-      podcastId: string
+      podcastId: number
     }
   | { noteId: number }
 

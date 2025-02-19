@@ -21,8 +21,9 @@ export default async function PodcastPage({
 }: {
   params: { id: string }
 }) {
+  const podcastId = Number(params.id)
   const podcastResponse = await fetcher<PodcastEpisodesResponse>(
-    LOOKUP_PODCAST_EPISODES_API(params.id),
+    LOOKUP_PODCAST_EPISODES_API(podcastId),
     { cache: 'no-store' }
   )
   const [podcast, ...maybePodcastEpisodes] = podcastResponse.results
@@ -37,7 +38,7 @@ export default async function PodcastPage({
     )
   }
   const podcastEpisodeRelations = await getPodcastEpisodeRelations({
-    podcastId: Number(params.id),
+    podcastId,
   })
   const podcastEpisodes = (maybePodcastEpisodes ?? []).map(podcastEpisode => ({
     ...podcastEpisode,
@@ -64,7 +65,7 @@ export default async function PodcastPage({
                 <li key={podcastEpisode.trackId} className='group flex'>
                   {podcastEpisode.hasNote ? (
                     <Link
-                      href={`/podcasts/${params.id}/${podcastEpisode.trackId}`}
+                      href={`/podcasts/${podcastId}/${podcastEpisode.trackId}`}
                       className='block grow py-4 text-cb-pink hover:text-cb-pink/75 group-first:pt-0'
                     >
                       <div>{podcastEpisode.trackName}</div>
@@ -107,14 +108,14 @@ export default async function PodcastPage({
                             }
                             const noteId = await saveNote(newNote)
                             const newPodcastEpisode = {
-                              podcastId: Number(params.id),
+                              podcastId,
                               podcastEpisodeId: podcastEpisode.trackId,
                               noteId,
                             }
                             await savePodcastEpisodeRelation(newPodcastEpisode)
-                            revalidatePath(`/podcasts/${params.id}`)
+                            revalidatePath(`/podcasts/${podcastId}`)
                             redirect(
-                              `/podcasts/${params.id}/${podcastEpisode.trackId}`
+                              `/podcasts/${podcastId}/${podcastEpisode.trackId}`
                             )
                           }}
                         >
