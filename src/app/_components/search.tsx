@@ -57,7 +57,9 @@ export default function Search({ favorites }: { favorites: Podcast[] }) {
       <Combobox
         as='div'
         onChange={(podcast: Podcast) => {
-          router.push(`/podcasts/${podcast.trackId}`)
+          if (podcast) {
+            router.push(`/podcasts/${podcast.trackId}`)
+          }
         }}
         className='relative mx-auto w-full divide-y divide-cb-dusty-blue overflow-hidden rounded-xl bg-cb-blue ring-1 ring-cb-mint'
       >
