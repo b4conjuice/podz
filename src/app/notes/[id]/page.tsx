@@ -56,7 +56,10 @@ export default async function NotePage({ params }: { params: { id: string } }) {
       </Main>
       <footer className='sticky bottom-0 flex items-center justify-between bg-cb-dusty-blue px-2 pb-4 pt-2'>
         <div className='flex space-x-4'>
-          <Link href='/' className='text-cb-yellow hover:text-cb-yellow/75'>
+          <Link
+            href='/notes'
+            className='text-cb-yellow hover:text-cb-yellow/75'
+          >
             <ChevronLeftIcon className='h-6 w-6' />
           </Link>
         </div>

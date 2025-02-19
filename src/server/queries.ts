@@ -104,7 +104,7 @@ export async function saveNote(note: EditableNote) {
   return newNote.id
 }
 
-export async function getNotes() {
+export async function getNotes(params?: { limit: number }) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
@@ -116,9 +116,12 @@ export async function getNotes() {
     .where(eq(notes.author, user.userId))
     .orderBy(desc(notes.updatedAt))
 
-  return results
+  const notesWithPodcasts = results
     .filter(result => result.podcast_episode)
     .map(result => result.n4_note)
+  return params?.limit
+    ? notesWithPodcasts.slice(0, params?.limit)
+    : notesWithPodcasts
 }
 
 export async function getNote(noteId: number) {

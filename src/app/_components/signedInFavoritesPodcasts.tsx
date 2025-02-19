@@ -6,13 +6,18 @@ import { getFavorites, getNotes } from '@/server/queries'
 
 export default async function SignedInFavoritePodcasts() {
   const favorites = await getFavorites()
-  const notes = await getNotes()
+  const notes = await getNotes({ limit: 10 })
   return (
     <>
       <Search favorites={favorites} />
       <Favorites favorites={favorites} />
       <>
-        <h2>notes</h2>
+        <div className='flex justify-between'>
+          <h2>notes</h2>
+          <Link href='/notes' className='text-cb-pink hover:text-cb-pink/75'>
+            all
+          </Link>
+        </div>
         {notes.length > 0 ? (
           <ul className='divide-y divide-cb-dusty-blue'>
             {notes.map(note => (
