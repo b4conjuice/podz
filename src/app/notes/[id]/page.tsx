@@ -6,6 +6,7 @@ import { Main } from '@/components/ui'
 import Textarea from '@/app/_components/textarea'
 import { getNote } from '@/server/queries'
 import TopNav from '@/app/_components/topNav'
+import DeleteButton from '@/app/_components/deleteButton'
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const user = auth()
@@ -59,7 +60,9 @@ export default async function NotePage({ params }: { params: { id: string } }) {
             <ChevronLeftIcon className='h-6 w-6' />
           </Link>
         </div>
-        <div className='flex space-x-4'></div>
+        <div className='flex space-x-4'>
+          <DeleteButton noteId={note.id} />
+        </div>
       </footer>
     </>
   )

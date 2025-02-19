@@ -1,20 +1,21 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { TrashIcon } from '@heroicons/react/20/solid'
 
 import { Button, Modal } from '@/components/ui'
-import { deleteNoteByEpisodeId } from '@/server/queries'
-import { useRouter } from 'next/navigation'
+import { deleteNote, deleteNoteByEpisodeId } from '@/server/queries'
 import { type PodcastEpisode } from '@/lib/types'
 
-export default function DeleteButton({
-  podcastEpisode,
-  podcastId,
-}: {
-  podcastEpisode: PodcastEpisode
-  podcastId: string
-}) {
+type Params =
+  | {
+      podcastEpisode: PodcastEpisode
+      podcastId: string
+    }
+  | { noteId: number }
+
+export default function DeleteButton(params: Params) {
   const router = useRouter()
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   return (
@@ -36,10 +37,16 @@ export default function DeleteButton({
         <div className='flex space-x-4'>
           <Button
             onClick={async () => {
-              console.log('to be deleted', podcastEpisode.trackId)
-              await deleteNoteByEpisodeId(podcastEpisode.trackId, '/')
-              setIsConfirmModalOpen(false)
-              router.push(`/podcasts/${podcastId}`)
+              if ('podcastEpisode' in params) {
+                await deleteNoteByEpisodeId(params.podcastEpisode.trackId, '/')
+                setIsConfirmModalOpen(false)
+                router.push(`/podcasts/${params.podcastId}`)
+              }
+              if ('noteId' in params) {
+                await deleteNote(params.noteId, '/')
+                setIsConfirmModalOpen(false)
+                router.push('/')
+              }
             }}
           >
             yes
