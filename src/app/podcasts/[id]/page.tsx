@@ -15,6 +15,7 @@ import {
   saveNote,
   savePodcastEpisodeRelation,
 } from '@/server/queries'
+import Search from './search'
 
 export default async function PodcastPage({
   params,
@@ -59,6 +60,7 @@ export default async function PodcastPage({
       </TopNav>
       <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
         <div className='flex flex-grow flex-col space-y-4'>
+          <Search podcastId={podcastId} />
           {podcastEpisodes.length && podcastEpisodes.length > 0 ? (
             <ul className='divide-y divide-cb-dusty-blue'>
               {podcastEpisodes.map(podcastEpisode => (
