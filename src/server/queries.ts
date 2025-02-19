@@ -203,6 +203,22 @@ export async function getPodcastEpisodeRelation({
   return podcastEpisode
 }
 
+export async function getPodcastEpisodeRelations({
+  podcastId,
+}: {
+  podcastId: number
+}) {
+  const user = auth()
+
+  if (!user.userId) throw new Error('unauthorized')
+
+  const podcastEpisode = await db.query.podcastEpisodes.findMany({
+    where: (model, { eq }) => and(eq(model.podcastId, podcastId)),
+  })
+
+  return podcastEpisode
+}
+
 export async function savePodcastEpisodeRelation(
   episode: PodcastEpisode,
   currentPath = '/'
