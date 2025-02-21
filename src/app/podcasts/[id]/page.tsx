@@ -19,9 +19,14 @@ import Search from './search'
 
 export default async function PodcastPage({
   params,
+  searchParams,
 }: {
   params: { id: string }
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
+  const filter = (await searchParams).filter
+  const showNotesOnly = filter === 'notes'
+
   const podcastId = Number(params.id)
   const podcastResponse = await fetcher<PodcastEpisodesResponse>(
     LOOKUP_PODCAST_EPISODES_API({ podcastId }),
@@ -41,15 +46,21 @@ export default async function PodcastPage({
   const podcastEpisodeRelations = await getPodcastEpisodeRelations({
     podcastId,
   })
-  const podcastEpisodes = (maybePodcastEpisodes ?? []).map(podcastEpisode => ({
-    ...podcastEpisode,
-    hasNote: Boolean(
-      podcastEpisodeRelations.find(
-        podcastEpisodeRelation =>
-          podcastEpisodeRelation.podcastEpisodeId === podcastEpisode.trackId
-      )
-    ),
-  }))
+  const allPodcastEpisodes = (maybePodcastEpisodes ?? []).map(
+    podcastEpisode => ({
+      ...podcastEpisode,
+      hasNote: Boolean(
+        podcastEpisodeRelations.find(
+          podcastEpisodeRelation =>
+            podcastEpisodeRelation.podcastEpisodeId === podcastEpisode.trackId
+        )
+      ),
+    })
+  )
+
+  const podcastEpisodes = showNotesOnly
+    ? allPodcastEpisodes.filter(podcastEpisode => podcastEpisode.hasNote)
+    : allPodcastEpisodes
   return (
     <>
       <TopNav>
@@ -146,7 +157,23 @@ export default async function PodcastPage({
             <ChevronLeftIcon className='h-6 w-6' />
           </Link>
         </div>
-        <div className='flex space-x-4'></div>
+        <div className='flex space-x-4'>
+          {showNotesOnly ? (
+            <Link
+              className='text-cb-yellow hover:text-cb-yellow/75'
+              href={`/podcasts/${podcastId}`}
+            >
+              show all episodes
+            </Link>
+          ) : (
+            <Link
+              className='text-cb-yellow hover:text-cb-yellow/75'
+              href={`/podcasts/${podcastId}?filter=notes`}
+            >
+              show only with notes
+            </Link>
+          )}
+        </div>
       </footer>
     </>
   )
