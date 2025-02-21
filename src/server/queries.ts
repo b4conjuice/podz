@@ -118,7 +118,10 @@ export async function getNotes(params?: { limit: number }) {
 
   const notesWithPodcasts = results
     .filter(result => result.podcast_episode)
-    .map(result => result.n4_note)
+    .map(result => ({
+      ...result.n4_note,
+      podcast_episode: result.podcast_episode,
+    }))
   return params?.limit
     ? notesWithPodcasts.slice(0, params?.limit)
     : notesWithPodcasts

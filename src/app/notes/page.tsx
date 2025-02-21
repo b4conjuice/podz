@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { SignedIn } from '@clerk/nextjs'
-import { ChevronLeftIcon } from '@heroicons/react/20/solid'
+import { ChevronLeftIcon, MicrophoneIcon } from '@heroicons/react/20/solid'
 
 import { Main } from '@/components/ui'
 import TopNav from '@/app/_components/topNav'
@@ -13,12 +13,21 @@ async function Notes() {
       {notes.length > 0 ? (
         <ul className='divide-y divide-cb-dusty-blue'>
           {notes.map(note => (
-            <li key={note.id} className='group flex items-center space-x-2'>
+            <li key={note.id} className='group flex items-center space-x-4'>
               <Link
                 href={`/notes/${note.id}`}
                 className='grow py-4 text-cb-pink hover:text-cb-pink/75 group-first:pt-0'
               >
                 {note.title}
+                {note.tags && note.tags.length > 0 && (
+                  <div>{note.tags.join(' ')}</div>
+                )}
+              </Link>
+              <Link
+                href={`/podcasts/${note.podcast_episode?.podcastId}`}
+                className='text-cb-yellow hover:text-cb-yellow/75'
+              >
+                <MicrophoneIcon className='h-6 w-6' />
               </Link>
             </li>
           ))}
